@@ -1,0 +1,44 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "r1", "type": "rectangle", "x": 50, "y": 50, "width": 120, "height": 60,
+      "strokeColor": "#4a9eed", "backgroundColor": "#a5d8ff", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100,
+      "roundness": { "type": 3 }
+    },
+    {
+      "id": "e1", "type": "ellipse", "x": 250, "y": 50, "width": 120, "height": 60,
+      "strokeColor": "#15803d", "backgroundColor": "#b2f2bb", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100
+    },
+    {
+      "id": "d1", "type": "diamond", "x": 450, "y": 50, "width": 120, "height": 60,
+      "strokeColor": "#c2410c", "backgroundColor": "#ffd8a8", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100
+    },
+    {
+      "id": "a1", "type": "arrow", "x": 170, "y": 80, "width": 80, "height": 0,
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100,
+      "points": [[0, 0], [80, 0]], "startArrowhead": null, "endArrowhead": "triangle"
+    },
+    {
+      "id": "a2", "type": "arrow", "x": 370, "y": 80, "width": 80, "height": 0,
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "dashed",
+      "strokeWidth": 2, "strokeStyle": "dashed", "roughness": 0, "opacity": 100,
+      "points": [[0, 0], [80, 0]], "startArrowhead": null, "endArrowhead": "triangle"
+    },
+    {
+      "id": "t1", "type": "text", "x": 200, "y": 150, "width": 200, "height": 25,
+      "strokeColor": "#1e1e1e", "backgroundColor": "transparent", "fillStyle": "solid",
+      "strokeWidth": 2, "strokeStyle": "solid", "roughness": 0, "opacity": 100,
+      "text": "Flow Diagram", "fontSize": 20, "fontFamily": 2,
+      "textAlign": "center", "verticalAlign": "top", "lineHeight": 1.25
+    }
+  ],
+  "appState": {},
+  "files": {}
+}

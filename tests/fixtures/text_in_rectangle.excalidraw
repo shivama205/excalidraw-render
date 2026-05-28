@@ -1,0 +1,47 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "rect-c",
+      "type": "rectangle",
+      "x": 50,
+      "y": 50,
+      "width": 200,
+      "height": 80,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "#b2f2bb",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "boundElements": [{ "type": "text", "id": "txt-c" }]
+    },
+    {
+      "id": "txt-c",
+      "type": "text",
+      "x": 50,
+      "y": 50,
+      "width": 200,
+      "height": 80,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "text": "Hello",
+      "fontSize": 20,
+      "fontFamily": 2,
+      "textAlign": "center",
+      "verticalAlign": "middle",
+      "containerId": "rect-c",
+      "lineHeight": 1.25
+    }
+  ],
+  "appState": {},
+  "files": {}
+}

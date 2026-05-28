@@ -1,0 +1,34 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "fd-1",
+      "type": "freedraw",
+      "x": 50,
+      "y": 50,
+      "width": 200,
+      "height": 80,
+      "strokeColor": "#4a9eed",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 3,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "points": [
+        [0, 0],
+        [30, 20],
+        [60, 50],
+        [100, 70],
+        [150, 60],
+        [200, 80]
+      ],
+      "pressures": [],
+      "simulatePressure": true
+    }
+  ],
+  "appState": {},
+  "files": {}
+}

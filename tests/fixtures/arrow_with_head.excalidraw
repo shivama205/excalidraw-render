@@ -1,0 +1,27 @@
+{
+  "type": "excalidraw",
+  "version": 2,
+  "source": "https://excalidraw.com",
+  "elements": [
+    {
+      "id": "arr-1",
+      "type": "arrow",
+      "x": 50,
+      "y": 100,
+      "width": 200,
+      "height": 50,
+      "strokeColor": "#1e1e1e",
+      "backgroundColor": "transparent",
+      "fillStyle": "solid",
+      "strokeWidth": 2,
+      "strokeStyle": "solid",
+      "roughness": 0,
+      "opacity": 100,
+      "points": [[0, 0], [100, 0], [200, 50]],
+      "startArrowhead": null,
+      "endArrowhead": "triangle"
+    }
+  ],
+  "appState": {},
+  "files": {}
+}

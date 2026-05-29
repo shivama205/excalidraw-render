@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-05-29
+
+### Fixed
+- Removed unused `pillow` runtime dependency. It was carried over from
+  prototyping but never imported. Dropping it makes `pip install`,
+  `brew install`, and any CI install lighter and avoids pillow's
+  native-build path on systems without prebuilt wheels.
+
 ## [0.1.0] - 2026-05-29
 
 ### Added

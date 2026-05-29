@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "excalidraw-render"
-version = "0.2.0.dev0"
+version = "0.1.1"
 description = "Clean, deterministic, browser-free renderer for .excalidraw files (PNG/SVG)."
 readme = "README.md"
 license = { file = "LICENSE" }
@@ -26,7 +26,6 @@ classifiers = [
 ]
 dependencies = [
   "cairosvg>=2.7",
-  "pillow>=10.0",
 ]
 
 [project.optional-dependencies]

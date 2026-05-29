@@ -4,6 +4,7 @@
 [![PyPI](https://img.shields.io/pypi/v/excalidraw-render.svg)](https://pypi.org/project/excalidraw-render/)
 [![Python](https://img.shields.io/pypi/pyversions/excalidraw-render.svg)](https://pypi.org/project/excalidraw-render/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Mentioned in awesome-svg](https://awesome.re/mentioned-badge.svg)](https://github.com/willianjusten/awesome-svg)
 
 Clean, deterministic, browser-free renderer for `.excalidraw` files. Pure Python + cairosvg. No Node, no headless browser, no `node-canvas`.
 

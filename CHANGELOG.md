@@ -7,13 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.1] - 2026-05-29
+## [0.1.2] - 2026-05-29
 
 ### Fixed
-- Removed unused `pillow` runtime dependency. It was carried over from
-  prototyping but never imported. Dropping it makes `pip install`,
-  `brew install`, and any CI install lighter and avoids pillow's
-  native-build path on systems without prebuilt wheels.
+- Restore `pillow` as a runtime dependency. `cairosvg`'s `surface.py`
+  imports PIL at module load even when we don't render embedded SVG
+  `<image>` elements, so dropping it in 0.1.1 broke `render_png` for
+  every input. v0.1.1 should be considered broken — use 0.1.2 or later.
+
+## [0.1.1] - 2026-05-29 (broken — do not use)
+
+### Fixed
+- Removed unused `pillow` runtime dependency. Reverted in 0.1.2 because
+  cairosvg actually does need it at module-load time.
 
 ## [0.1.0] - 2026-05-29
 

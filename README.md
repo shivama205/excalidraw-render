@@ -140,11 +140,11 @@ Coverage matrix: [`docs/elements.md`](docs/elements.md).
 
 ## What's not supported yet
 
-Documented in [`CHANGELOG.md`](CHANGELOG.md). Highlights:
+See [`ROADMAP.md`](ROADMAP.md) for the full release ladder to 1.0. Highlights:
 
-- Roughness / hand-drawn look (needs roughjs port)
-- Terminal output (iTerm / Kitty / Sixel)
-- Markdown preprocessor subcommand
+- Roughness / hand-drawn look (needs roughjs port — planned for 0.7.0)
+- Markdown preprocessor subcommand (0.5.0)
+- Terminal output (iTerm / Kitty / Sixel) (0.6.0)
 
 ## Contributing
 

@@ -21,7 +21,7 @@ import sys
 from pathlib import Path
 
 from excalidraw_render._version import __version__
-from excalidraw_render.render import load_scene, render_png, render_svg
+from excalidraw_render.render import load_scene, render_jpg, render_pdf, render_png, render_svg
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -37,7 +37,7 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     )
     parser.add_argument(
         "-f", "--format",
-        choices=("png", "svg"),
+        choices=("png", "svg", "pdf", "jpg", "jpeg"),
         default="png",
         help="output format. default: png",
     )
@@ -64,6 +64,12 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="padding around the scene's bounding box in SVG units. default: 20",
     )
     parser.add_argument(
+        "--quality",
+        type=int,
+        default=90,
+        help="JPEG quality, 1-100 (jpg/jpeg format only). default: 90",
+    )
+    parser.add_argument(
         "-V", "--version",
         action="version",
         version=f"excalidraw-render {__version__}",
@@ -88,18 +94,21 @@ def _output_path_for(source: Path, requested: str | None, fmt: str, *, batch_dir
 def _render_one(source: Path, output: Path, args: argparse.Namespace) -> None:
     scene = load_scene(source)
     background = None if args.no_background else "#ffffff"
+    raster_kwargs = {
+        "width": args.width,
+        "scale": args.scale,
+        "padding": args.padding,
+        "background": background,
+    }
     if args.format == "svg":
         svg = render_svg(scene, padding=args.padding, background=background)
         output.write_text(svg)
+    elif args.format == "pdf":
+        render_pdf(scene, output, **raster_kwargs)
+    elif args.format in ("jpg", "jpeg"):
+        render_jpg(scene, output, quality=args.quality, **raster_kwargs)
     else:
-        render_png(
-            scene,
-            output,
-            width=args.width,
-            scale=args.scale,
-            padding=args.padding,
-            background=background,
-        )
+        render_png(scene, output, **raster_kwargs)
     print(f"{source} -> {output}", file=sys.stderr)
 
 

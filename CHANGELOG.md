@@ -7,6 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.0] - 2026-06-12
+
+### Added
+- PDF output: `render_pdf()` and CLI `--format pdf`. Single-page vector PDF
+  via cairosvg — no extra dependencies.
+- JPEG output: `render_jpg()` and CLI `--format jpg` / `jpeg`, with
+  `--quality` (default 90). Transparent backgrounds are flattened onto white
+  since JPEG has no alpha channel.
+
+### Fixed
+- Container-bound text positioning: text with a `containerId` pointing at a
+  rectangle, ellipse, or diamond is now laid out inside the container using
+  Excalidraw's own algorithm (`computeBoundTextPosition`) — padding-aware
+  (`BOUND_TEXT_PADDING = 5`), with inscribed-rectangle offsets for ellipse and
+  diamond, honoring `textAlign` / `verticalAlign` relative to the container.
+  Bound text also rotates with its container around the container's center
+  instead of its own. Arrow labels keep their stored coordinates.
+
 ## [0.1.2] - 2026-05-29
 
 ### Fixed

@@ -40,7 +40,11 @@ DEFAULT_PADDING = 20
 DEFAULT_BACKGROUND = "#ffffff"
 
 
-def _render_element(el: ExcalidrawElement, scene: Scene) -> str:
+def _render_element(
+    el: ExcalidrawElement,
+    scene: Scene,
+    by_id: dict[str, ExcalidrawElement],
+) -> str:
     if isinstance(el, RectangleElement):
         return render_rectangle(el)
     if isinstance(el, EllipseElement):
@@ -52,7 +56,8 @@ def _render_element(el: ExcalidrawElement, scene: Scene) -> str:
     if isinstance(el, LineElement):
         return render_line(el)
     if isinstance(el, TextElement):
-        return render_text(el)
+        container = by_id.get(el.container_id) if el.container_id else None
+        return render_text(el, container=container)
     if isinstance(el, FreeDrawElement):
         return render_freedraw(el)
     if isinstance(el, ImageElement):
@@ -128,9 +133,23 @@ def render_svg(
             f'<rect x="{fmt(vx)}" y="{fmt(vy)}" '
             f'width="{fmt(width)}" height="{fmt(height)}" fill="{background}"/>'
         )
-    parts.extend(_render_element(el, scene) for el in scene.elements)
+    by_id: dict[str, ExcalidrawElement] = {el.id: el for el in scene.elements}
+    parts.extend(_render_element(el, scene, by_id) for el in scene.elements)
     parts.append("</svg>")
     return "\n".join(p for p in parts if p)
+
+
+def _size_kwargs(width: int | None, scale: float) -> dict[str, Any]:
+    if width:
+        return {"output_width": width}
+    return {"scale": scale}
+
+
+def _write_out(out: IO[bytes] | Path | str, data: bytes) -> None:
+    if isinstance(out, (str, Path)):
+        Path(out).write_bytes(data)
+    else:
+        out.write(data)
 
 
 def render_png(
@@ -146,20 +165,62 @@ def render_png(
     import cairosvg  # local import — cairosvg is heavy; let SVG-only use skip it.
 
     svg = render_svg(scene, padding=padding, background=background)
-    target: str | IO[bytes] = str(out) if isinstance(out, (str, Path)) else out
+    buf = BytesIO()
+    cairosvg.svg2png(bytestring=svg.encode("utf-8"), write_to=buf, **_size_kwargs(width, scale))
+    _write_out(out, buf.getvalue())
 
-    kwargs: dict[str, Any] = {}
-    if width:
-        kwargs["output_width"] = width
-    else:
-        kwargs["scale"] = scale
 
-    if isinstance(target, str):
-        cairosvg.svg2png(bytestring=svg.encode("utf-8"), write_to=target, **kwargs)
+def render_pdf(
+    scene: Scene,
+    out: IO[bytes] | Path | str,
+    *,
+    width: int | None = None,
+    scale: float = 1.0,
+    padding: float = DEFAULT_PADDING,
+    background: str | None = DEFAULT_BACKGROUND,
+) -> None:
+    """Render a Scene to a single-page vector PDF."""
+    import cairosvg
+
+    svg = render_svg(scene, padding=padding, background=background)
+    buf = BytesIO()
+    cairosvg.svg2pdf(bytestring=svg.encode("utf-8"), write_to=buf, **_size_kwargs(width, scale))
+    _write_out(out, buf.getvalue())
+
+
+def render_jpg(
+    scene: Scene,
+    out: IO[bytes] | Path | str,
+    *,
+    width: int | None = None,
+    scale: float = 1.0,
+    padding: float = DEFAULT_PADDING,
+    background: str | None = DEFAULT_BACKGROUND,
+    quality: int = 90,
+) -> None:
+    """Render a Scene to a JPEG.
+
+    JPEG has no alpha channel, so a transparent background (background=None)
+    is flattened onto white.
+    """
+    import cairosvg
+    from PIL import Image
+
+    svg = render_svg(scene, padding=padding, background=background)
+    png_buf = BytesIO()
+    cairosvg.svg2png(bytestring=svg.encode("utf-8"), write_to=png_buf, **_size_kwargs(width, scale))
+    png_buf.seek(0)
+
+    png = Image.open(png_buf)
+    if png.mode == "RGBA":
+        img = Image.new("RGB", png.size, "#ffffff")
+        img.paste(png, mask=png.getchannel("A"))
     else:
-        buf = BytesIO()
-        cairosvg.svg2png(bytestring=svg.encode("utf-8"), write_to=buf, **kwargs)
-        target.write(buf.getvalue())
+        img = png.convert("RGB")
+
+    jpg_buf = BytesIO()
+    img.save(jpg_buf, format="JPEG", quality=quality)
+    _write_out(out, jpg_buf.getvalue())
 
 
 def load_scene(path: Path | str) -> Scene:

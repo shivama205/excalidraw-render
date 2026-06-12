@@ -41,6 +41,22 @@ def test_cli_directory_batch_mode(tmp_path: Path) -> None:
     assert (out_dir / "mixed_scene.png").exists()
 
 
+def test_cli_pdf_format(tmp_path: Path) -> None:
+    src = tmp_path / "rect.excalidraw"
+    shutil.copy(FIXTURES / "rectangle_basic.excalidraw", src)
+    rc = main([str(src), "-f", "pdf"])
+    assert rc == 0
+    assert (tmp_path / "rect.pdf").read_bytes()[:5] == b"%PDF-"
+
+
+def test_cli_jpg_format_with_quality(tmp_path: Path) -> None:
+    src = tmp_path / "rect.excalidraw"
+    shutil.copy(FIXTURES / "rectangle_basic.excalidraw", src)
+    rc = main([str(src), "-f", "jpg", "--quality", "60"])
+    assert rc == 0
+    assert (tmp_path / "rect.jpg").read_bytes()[:3] == b"\xff\xd8\xff"
+
+
 def test_cli_missing_input_returns_error(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:
     rc = main([str(tmp_path / "nope.excalidraw")])
     assert rc == 1

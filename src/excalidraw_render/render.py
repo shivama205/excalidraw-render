@@ -35,6 +35,7 @@ from excalidraw_render.renderers import (
     render_text,
 )
 from excalidraw_render.renderers._util import fmt
+from excalidraw_render.renderers.fills import pattern_def, pattern_id, uses_pattern_fill
 
 DEFAULT_PADDING = 20
 DEFAULT_BACKGROUND = "#ffffff"
@@ -133,6 +134,15 @@ def render_svg(
             f'<rect x="{fmt(vx)}" y="{fmt(vy)}" '
             f'width="{fmt(width)}" height="{fmt(height)}" fill="{background}"/>'
         )
+
+    # Pattern-fill defs: one per unique (fill_style, color, stroke_width).
+    pattern_defs: dict[str, str] = {}
+    for el in scene.elements:
+        if isinstance(el, (RectangleElement, EllipseElement, DiamondElement)) and uses_pattern_fill(el):
+            pattern_defs.setdefault(pattern_id(el), pattern_def(el))
+    if pattern_defs:
+        parts.append("<defs>" + "".join(pattern_defs[k] for k in sorted(pattern_defs)) + "</defs>")
+
     by_id: dict[str, ExcalidrawElement] = {el.id: el for el in scene.elements}
     parts.extend(_render_element(el, scene, by_id) for el in scene.elements)
     parts.append("</svg>")

@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from excalidraw_render.element import DiamondElement, EllipseElement, RectangleElement
 from excalidraw_render.renderers._util import (
-    fill_attr,
     fmt,
     stroke_style_attrs,
     transform_attr,
 )
+from excalidraw_render.renderers.fills import fill_attr
 
 
 def _roundness_radius(roundness: object, width: float, height: float) -> float:

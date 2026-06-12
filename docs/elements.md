@@ -30,7 +30,7 @@ Legend: ☐ not started · ⏳ in progress · ☑ done · — N/A · skip not in
 | `backgroundColor` | ☑ | Hex colors. |
 | `strokeWidth` | ☑ | Integer pixels. |
 | `strokeStyle` | ☑ | `solid` / `dashed` / `dotted`. |
-| `fillStyle` | ⏳ | `solid` done. `hachure` / `cross-hatch` / `zigzag` / `dots` fall back to solid — SVG patterns planned. |
+| `fillStyle` | ☑ | `solid` plus `hachure` / `cross-hatch` / `zigzag` / `zigzag-line` / `dots` / `dashed` as clean SVG `<pattern>` approximations of roughjs fills. |
 | `opacity` | ☑ | 0–100 → SVG `opacity` 0–1. |
 | `angle` | ☑ | Element rotation in radians; SVG `transform="rotate(...)"`. |
 | `roughness` | — | Not supported in v0.1 — see README. |

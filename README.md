@@ -130,7 +130,7 @@ render_png(scene, buf, scale=2.0)
 **Formats:** PNG, SVG, vector PDF, JPEG.
 **Elements:** rectangle, ellipse, diamond, arrow, line, text, freedraw, image, frame.
 **Arrowheads:** `arrow`, `triangle`, `triangle_outline`, `bar`, `dot`, `diamond`, `diamond_outline`, `crowfoot_one`, `crowfoot_many`, `crowfoot_one_or_many`.
-**Styling:** stroke color/width, fill color, stroke style (solid/dashed/dotted), opacity, per-element rotation.
+**Styling:** stroke color/width, fill color, fill patterns (hachure, cross-hatch, zigzag, dots, dashed — clean SVG-pattern approximations of the roughjs originals), stroke style (solid/dashed/dotted), opacity, per-element rotation.
 **Text:** multi-line, text-align (left/center/right), vertical-align (top/middle/bottom), Excalidraw font families mapped to web-safe fonts. Container-bound text (labels inside rectangles, ellipses, diamonds) is positioned with Excalidraw's own padding-aware layout algorithm and rotates with its container.
 **Freedraw:** smooth path via Catmull-Rom → cubic Bezier conversion.
 **Image:** embedded raster data from the scene's `files` dict.
@@ -143,7 +143,6 @@ Coverage matrix: [`docs/elements.md`](docs/elements.md).
 Documented in [`CHANGELOG.md`](CHANGELOG.md). Highlights:
 
 - Roughness / hand-drawn look (needs roughjs port)
-- Hachure / cross-hatch / zigzag / dots fill patterns (currently fall back to solid)
 - Terminal output (iTerm / Kitty / Sixel)
 - Markdown preprocessor subcommand
 

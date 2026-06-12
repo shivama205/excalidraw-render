@@ -65,15 +65,3 @@ def stroke_style_attrs(element: ExcalidrawElementBase) -> str:
     return " ".join(parts)
 
 
-def fill_attr(element: ExcalidrawElementBase) -> str:
-    """Return the SVG `fill` attribute value for an element.
-
-    `transparent` background → `none` fill.
-    `fill_style` other than `solid` → handled by a separate pattern reference in v0.2.
-    """
-    bg = element.background_color
-    if not bg or bg.lower() in ("transparent", "none"):
-        return 'fill="none"'
-    # v0.1: render hachure / cross-hatch / etc. as solid fills.
-    # Real hatch patterns come in v0.2.
-    return f'fill="{bg}"'

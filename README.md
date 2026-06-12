@@ -18,6 +18,7 @@ excalidraw-render diagram.excalidraw -f svg             # → diagram.svg
 excalidraw-render diagram.excalidraw -f pdf             # → diagram.pdf (vector)
 excalidraw-render diagram.excalidraw --width 1200       # PNG at 1200px wide
 excalidraw-render ./docs/                               # batch: every .excalidraw → .png
+excalidraw-render ./docs/ --watch                       # re-render on every save
 ```
 
 ## Why this exists
@@ -49,7 +50,7 @@ A pure-Python roughjs port (`pyroughjs`) is on the roadmap. Until then, if you n
 | Headless browser needed | No | No | Yes |
 | Native canvas / image libs | No | Yes (`node-canvas`) | No |
 | Install size | ~10 MB | ~150 MB | Depends |
-| Batch / watch mode | Batch ✓ / watch planned | No | No |
+| Batch / watch mode | Yes | No | No |
 | Terminal protocols | Planned (iTerm / Kitty / Sixel) | No | No |
 
 ## Install
@@ -96,6 +97,9 @@ excalidraw-render diagram.excalidraw -f jpg --quality 85
 
 # Batch mode: every .excalidraw in a directory
 excalidraw-render ./docs/diagrams/ -o ./public/diagrams/
+
+# Watch mode: re-render on every save (single file or directory)
+excalidraw-render ./docs/diagrams/ --watch
 ```
 
 ### Python API
@@ -140,7 +144,6 @@ Documented in [`CHANGELOG.md`](CHANGELOG.md). Highlights:
 
 - Roughness / hand-drawn look (needs roughjs port)
 - Hachure / cross-hatch / zigzag / dots fill patterns (currently fall back to solid)
-- Watch mode (coming in 0.3.0)
 - Terminal output (iTerm / Kitty / Sixel)
 - Markdown preprocessor subcommand
 

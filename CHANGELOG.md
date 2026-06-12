@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Watch mode: `--watch` / `-w` re-renders whenever a source file changes, in
+  both single-file and directory mode. New files appearing in a watched
+  directory are picked up; render errors (e.g. half-saved files) are reported
+  without stopping the watcher.
+
 ## [0.2.0] - 2026-06-12
 
 ### Added

@@ -12,16 +12,22 @@ Usage:
 
     excalidraw-render DIR/
         → batch mode: every .excalidraw file in DIR rendered to <name>.png next to source
+
+    excalidraw-render DIR/ --watch
+        → batch render, then re-render whenever a source file changes (Ctrl-C to stop)
 """
 
 from __future__ import annotations
 
 import argparse
 import sys
+import time
 from pathlib import Path
 
 from excalidraw_render._version import __version__
 from excalidraw_render.render import load_scene, render_jpg, render_pdf, render_png, render_svg
+
+WATCH_INTERVAL_SECONDS = 0.5
 
 
 def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -70,6 +76,11 @@ def _parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         help="JPEG quality, 1-100 (jpg/jpeg format only). default: 90",
     )
     parser.add_argument(
+        "-w", "--watch",
+        action="store_true",
+        help="render, then watch the input for changes and re-render (Ctrl-C to stop)",
+    )
+    parser.add_argument(
         "-V", "--version",
         action="version",
         version=f"excalidraw-render {__version__}",
@@ -116,6 +127,50 @@ def _iter_excalidraw_files(directory: Path) -> list[Path]:
     return sorted(p for p in directory.iterdir() if p.is_file() and p.suffix == ".excalidraw")
 
 
+def _poll_and_render(
+    mtimes: dict[Path, float],
+    input_path: Path,
+    args: argparse.Namespace,
+    *,
+    batch_dir: Path | None,
+) -> None:
+    """One watch-mode poll: render every new or modified source file.
+
+    `mtimes` carries state between polls. Render errors are reported but do
+    not stop the watch loop — a half-saved file shouldn't kill the watcher.
+    """
+    sources = _iter_excalidraw_files(input_path) if input_path.is_dir() else [input_path]
+    for src in sources:
+        try:
+            mtime = src.stat().st_mtime
+        except OSError:
+            continue  # deleted between listing and stat
+        if mtimes.get(src) == mtime:
+            continue
+        mtimes[src] = mtime
+        output = _output_path_for(
+            src,
+            None if batch_dir is not None else args.output,
+            args.format,
+            batch_dir=batch_dir,
+        )
+        try:
+            _render_one(src, output, args)
+        except Exception as exc:  # keep watching past bad/partial saves
+            print(f"excalidraw-render: error rendering {src}: {exc}", file=sys.stderr)
+
+
+def _watch(input_path: Path, args: argparse.Namespace, *, batch_dir: Path | None) -> int:
+    mtimes: dict[Path, float] = {}
+    print(f"excalidraw-render: watching {input_path} (Ctrl-C to stop)", file=sys.stderr)
+    try:
+        while True:
+            _poll_and_render(mtimes, input_path, args, batch_dir=batch_dir)
+            time.sleep(WATCH_INTERVAL_SECONDS)
+    except KeyboardInterrupt:
+        return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     args = _parse_args(argv)
     input_path = Path(args.input)
@@ -126,11 +181,13 @@ def main(argv: list[str] | None = None) -> int:
 
     if input_path.is_dir():
         sources = _iter_excalidraw_files(input_path)
-        if not sources:
+        if not sources and not args.watch:
             print(f"excalidraw-render: no .excalidraw files in {input_path}", file=sys.stderr)
             return 1
         batch_dir = Path(args.output) if args.output else input_path
         batch_dir.mkdir(parents=True, exist_ok=True)
+        if args.watch:
+            return _watch(input_path, args, batch_dir=batch_dir)
         for src in sources:
             _render_one(src, _output_path_for(src, None, args.format, batch_dir=batch_dir), args)
         return 0
@@ -144,6 +201,8 @@ def main(argv: list[str] | None = None) -> int:
 
     output = _output_path_for(input_path, args.output, args.format, batch_dir=None)
     output.parent.mkdir(parents=True, exist_ok=True)
+    if args.watch:
+        return _watch(input_path, args, batch_dir=None)
     _render_one(input_path, output, args)
     return 0
 

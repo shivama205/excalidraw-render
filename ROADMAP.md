@@ -22,8 +22,8 @@ API; every break is flagged in [CHANGELOG.md](CHANGELOG.md).
 |---|---|---|
 | 0.1.0 | Core renderer: 9 element types, arrowheads, styling, CLI, batch mode | ✅ shipped 2026-05-29 |
 | 0.2.0 | PDF + JPEG output, container-bound text layout fix | ✅ shipped 2026-06-12 |
-| 0.3.0 | Watch mode (`--watch`) | 🔜 merged, releasing ~2026-06-19 |
-| 0.4.0 | Fill patterns (hachure, cross-hatch, zigzag, dots, dashed) | 🔜 merged, next after 0.3.0 |
+| 0.3.0 | Watch mode (`--watch`) | ✅ shipped 2026-06-20 |
+| 0.4.0 | Fill patterns (hachure, cross-hatch, zigzag, dots, dashed) | 🔜 merged, releasing next |
 | 0.5.0 | Markdown preprocessor subcommand — render `.excalidraw` references in a docs tree | planned |
 | 0.6.0 | Terminal output (Kitty graphics, iTerm2 OSC-1337, Sixel) | planned |
 | 0.7.0 | `pyroughjs` alpha — hand-drawn look behind a `--rough` flag | planned |

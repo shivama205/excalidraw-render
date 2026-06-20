@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "excalidraw-render"
-version = "0.3.0.dev0"
+version = "0.3.0"
 description = "Clean, deterministic, browser-free renderer for .excalidraw files (PNG/SVG/PDF/JPEG)."
 readme = "README.md"
 license = { file = "LICENSE" }

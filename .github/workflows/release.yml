@@ -60,3 +60,54 @@ jobs:
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
+
+  update-tap:
+    name: Update Homebrew tap
+    needs: publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Wait for PyPI to index the release
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          for i in $(seq 1 30); do
+            if pip index versions excalidraw-render 2>/dev/null | grep -q "$VERSION"; then
+              echo "excalidraw-render==$VERSION is live on PyPI"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::excalidraw-render==$VERSION never showed up on PyPI after 5 minutes"
+          exit 1
+
+      - name: Checkout homebrew-tap
+        uses: actions/checkout@v4
+        with:
+          repository: shivama205/homebrew-tap
+          token: ${{ secrets.HOMEBREW_TAP_TOKEN }}
+          path: homebrew-tap
+
+      - name: Regenerate formula
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          python scripts/sync_homebrew_tap.py "$VERSION" homebrew-tap/Formula/excalidraw-render.rb
+
+      - name: Commit and push
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          cd homebrew-tap
+          if git diff --quiet; then
+            echo "No formula changes to push"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add Formula/excalidraw-render.rb
+          git commit -m "excalidraw-render $VERSION"
+          git push
